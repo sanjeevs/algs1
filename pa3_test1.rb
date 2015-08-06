@@ -22,9 +22,12 @@ class Pa3Test < Test::Unit::TestCase
     assert_equal 8, graph.num_nodes
     assert_equal [2, 3,4, 7], graph.neighbors(1)
     assert_equal [5,6,7], graph.neighbors(8)
+    assert_equal 14, graph.num_edges
+    assert_equal [1,3], graph.endpoints(1)
+    assert_equal [7,14], graph.endpoints(14)
   end
 
-  def test_duplicate_node
+  def xtest_duplicate_node
     err_data = <<-EOD
     1 2 3 4
     1 3
