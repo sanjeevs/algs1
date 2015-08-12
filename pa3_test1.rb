@@ -212,88 +212,43 @@ class Pa3Test < Test::Unit::TestCase
   end
   
   def test_random_contraction1
-    graph = Graph.create_fm_text(StringIO.new(@data1))
-    10.times do  
-      graph.random_contraction!
-      break if graph.num_nodes == 2
+    result = []
+    100.times do  
       graph = Graph.create_fm_text(StringIO.new(@data1))
+      graph.random_contraction!
+      result << graph.num_edges
     end
-    n1_lst = graph.nodes.first.name.split('_')
-    n2_lst = graph.nodes.last.name.split('_')
-    orig_graph = Graph.create_fm_text(StringIO.new(@data1))
-    min_cut = []
-    n1_lst.each do |n1|
-      orig_graph.neighbors(Node.new(n1)).each do |n2|
-        if n2_lst.include?(n2.name) 
-          min_cut << "(" + n1 + "," + n2.name + ")"
-        end
-      end
-    end
-    puts "MinCut=" + min_cut.to_s
+    assert_equal 2, result.min
   end
 
   def test_random_contraction2
-    graph = Graph.create_fm_text(StringIO.new(@data2))
-    10.times do  
-      graph.random_contraction!
-      break if graph.num_nodes == 2
+    result = []
+    100.times do  
       graph = Graph.create_fm_text(StringIO.new(@data2))
+      graph.random_contraction!
+      result << graph.num_edges
     end
-    n1_lst = graph.nodes.first.name.split('_')
-    n2_lst = graph.nodes.last.name.split('_')
-    orig_graph = Graph.create_fm_text(StringIO.new(@data2))
-    min_cut = []
-    n1_lst.each do |n1|
-      orig_graph.neighbors(Node.new(n1)).each do |n2|
-        if n2_lst.include?(n2.name) 
-          min_cut << "(" + n1 + "," + n2.name + ")"
-        end
-      end
-    end
-    puts "MinCut=" + min_cut.to_s
+    assert_equal 1, result.min
   end
   
   def test_random_contraction3
-    graph = Graph.create_fm_text(StringIO.new(@data3))
-    10.times do  
-      graph.random_contraction!
-      break if graph.num_nodes == 4
+    result = []
+    1024.times do  
       graph = Graph.create_fm_text(StringIO.new(@data3))
+      graph.random_contraction!
+      result << graph.num_edges
     end
-    n1_lst = graph.nodes.first.name.split('_')
-    n2_lst = graph.nodes.last.name.split('_')
-    orig_graph = Graph.create_fm_text(StringIO.new(@data3))
-    min_cut = []
-    n1_lst.each do |n1|
-      orig_graph.neighbors(Node.new(n1)).each do |n2|
-        if n2_lst.include?(n2.name) 
-          min_cut << "(" + n1 + "," + n2.name + ")"
-        end
-      end
-    end
-    puts "MinCut=" + min_cut.to_s
+    assert_equal 3, result.min
   end
   
   def test_random_contraction4
-    graph = Graph.create_fm_text(StringIO.new(@data4))
+    result = []
     100.times do  
-      graph.random_contraction!
-      break if graph.num_nodes == 2
       graph = Graph.create_fm_text(StringIO.new(@data4))
+      graph.random_contraction!
+      result << graph.num_edges
     end
-    graph.dump
-    n1_lst = graph.nodes.first.name.split('_')
-    n2_lst = graph.nodes.last.name.split('_')
-    orig_graph = Graph.create_fm_text(StringIO.new(@data4))
-    min_cut = []
-    n1_lst.each do |n1|
-      orig_graph.neighbors(Node.new(n1)).each do |n2|
-        if n2_lst.include?(n2.name) 
-          min_cut << "(" + n1 + "," + n2.name + ")"
-        end
-      end
-    end
-    puts "MinCut=" + min_cut.to_s
+    assert_equal 2, result.min
   end
   
   def test_karger
@@ -306,13 +261,15 @@ class Pa3Test < Test::Unit::TestCase
   end
   
   def test_krager_contraction
-    File.open("kargerMinCut.txt") do |fh|
-      graph = Graph.create_fm_text(fh)
-      graph.random_contraction!
-      graph.dump
-      n1_lst = graph.nodes.first.name.split('_')
-      n2_lst = graph.nodes.last.name.split('_')
+    result = []
+    10.times do  
+      File.open("kargerMinCut.txt") do |fh|
+        graph = Graph.create_fm_text(fh)
+        graph.random_contraction!
+        result << graph.num_edges
+      end
     end
+    puts "RESULT:#{result.min}"
   end
 
 end

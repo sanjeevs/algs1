@@ -64,7 +64,7 @@ class Graph
   end
   
   def random_contraction!
-    while num_non_parallel_edges > 2 do
+    while num_nodes > 2 do
       edge = @edges[rand(num_edges)]
       contract!(edge)
     end
