@@ -138,5 +138,13 @@ class TestGraph1 < Test::Unit::TestCase
     scc = g1.kosaraju_scc
     assert_equal [[1,4,7], [2,5,8], [3,6,9]], scc
   end
+
+  def test_pa4
+   File.open("SCC.txt", "r") do |fh|
+    g1 = DiGraph.create_fm_adj_lst(fh)
+    assert_equal 875714, g1.num_nodes
+    assert_equal 5105042, g1.num_edges
+   end
+  end 
 end
 

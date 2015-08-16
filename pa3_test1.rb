@@ -262,7 +262,7 @@ class Pa3Test < Test::Unit::TestCase
   
   def test_krager_contraction
     result = []
-    1.times do  
+    500.times do  
       File.open("kargerMinCut.txt") do |fh|
         graph = Graph.create_fm_text(fh)
         graph.random_contraction!
