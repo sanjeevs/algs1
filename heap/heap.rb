@@ -53,7 +53,6 @@ class Heap
   end
 
   def hash_swap(index)
-    puts "hash_swap at index=#{index}"
     parent = @arr[index]
     if left_child(index)
       if right_child(index)

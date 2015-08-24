@@ -5,10 +5,11 @@ require_relative "edge.rb"
 
 class DiGraph
   attr_reader :nodes
-
+  attr_reader :distance_vec
   def initialize
     @nodes = []
     @neighbors = {}
+    @distance_vec = {}
   end
 
   def self.create_fm_adj_lst(fh)
@@ -57,6 +58,35 @@ class DiGraph
     # Given that if the path does not exist then the distance is inf.
     weights << 1000000 if weights.empty?
     return weights
+  end
+
+  def shortest_path(src_node)
+    @distance_vec[src_node] = 0
+    src_node.explored = true
+    dijkstra(src_node)
+    distance = []
+    @distance_vec.keys.sort.each do |key|
+      distance << @distance_vec[key]
+    end
+    distance
+  end
+
+  def dijkstra(src_node)
+    min = 2000000
+    node = nil
+    puts "SrcNode is #{src_node.name}"
+    @neighbors[src_node].each do |pair|
+      if !pair[0].is_explored? and pair[1] < min
+        min = pair[1]
+        node = pair[0]
+      end
+    end
+    return nil unless node
+    @nodes.each do |node|
+      @distance_vec[node] = @distance_vec[src_node] + weights(src_node, node).min
+    end 
+    node.explored = true
+    return dijkstra(node)
   end
 
   def to_s

@@ -56,7 +56,6 @@ class TestHeap < Test::Unit::TestCase
   def test_bubble_up1
     heap1 = @heap
     heap1.arr << 0
-    puts heap1.arr.to_s
     heap1.bubble_up(15)
     assert_equal [0,0,2,1,4,5,6,3,8,9,10,11,12,13,14,15,7], heap1.arr
   end

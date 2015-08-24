@@ -27,7 +27,34 @@ class TestDijkstra < Test::Unit::TestCase
       assert_equal [4899], g1.weights(Node.new(200), Node.new(54))
       assert_equal [1000000], g1.weights(Node.new(1), Node.new(199))
       assert_equal [1000000], g1.weights(Node.new(1), Node.new(81))
+      g1.shortest_path(Node.new(1))
+      @nodes = [7,37,59,82,99,115,133,165,188,197]
+      @nodes.each do |i|
+        puts "ShortestPath to #{i} is #{g1.distance_vec[Node.new(i)]}"
+      end
     end
   end
+
+  def test_triangle1
+    buf = <<-EOD
+    1 2,50 3,25
+    3 2,5
+    EOD
+    g1 = DiGraph.create_fm_adj_lst(StringIO.new(buf))
+    assert_equal 3, g1.num_nodes
+    assert_equal [0,30,25], g1.shortest_path(Node.new(1))
+  end 
+
+  def test_quiz
+    buf = <<-EOD
+    1 2,1 3,4
+    2 3,2 4,6
+    3 4,3
+    EOD
+    g1 = DiGraph.create_fm_adj_lst(StringIO.new(buf))
+    assert_equal 4, g1.num_nodes
+    assert_equal [0,1,3,6], g1.shortest_path(Node.new(1))
+  end 
+
 end
 
